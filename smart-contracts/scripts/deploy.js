@@ -24,7 +24,7 @@ async function main() {
 
 function saveFrontendFiles(contract, name) {
   //saving files to the frontend folder inside of src
-  const contractsDir = __dirname + "/../../frontend/contractsData";
+  const contractsDir = __dirname + "/../../frontend/src/contractsData";
 
   if (!fs.existsSync(contractsDir)) {
     fs.mkdirSync(contractsDir, { recursive: true });
