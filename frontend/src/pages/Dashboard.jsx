@@ -1,6 +1,8 @@
-import React from 'react'
+import { useAuth } from '../context/AuthContext'
 
 const Dashboard = () => {
+  const { client, sample  } = useAuth();
+
   return (
     <div>Dashboard</div>
   )

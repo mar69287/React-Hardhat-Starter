@@ -1,20 +1,20 @@
 import { createContext, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import { ethers } from 'ethers';
-import { formatUnits } from 'ethers';
+import SampleAddress from '../contractsData/Sample-address.json'
+import SampleAbi from '../contractsData/Sample.json'
 
 const AuthContext = createContext()
 
 export const AuthProvider = ({children}) => {
-        const navigate = useNavigate()
         const [loading, setLoading] = useState(false)
         const [client, setClient] = useState(null);
         const [hasWeb3, setHasWeb3] = useState(false);
+        const [sample, setSample] = useState({})
 
         const web3Handler = async () => {
             var account;
             var chainId;
-        
+            setLoading(true)
             await window.ethereum.request({ method: 'eth_requestAccounts' }).then((accounts) => {
                 account = accounts[0];
             });
@@ -33,6 +33,13 @@ export const AuthProvider = ({children}) => {
                 chainId: chainId,
                 provider: provider,
             });
+            loadContracts(signer);
+            setLoading(false)
+        };
+
+        const loadContracts = async (signer) => {
+            const sampleContract = new ethers.Contract(SampleAddress.address, SampleAbi.abi, signer);
+            setSample(sampleContract);
         };
 
         if (window.ethereum) {
@@ -51,7 +58,8 @@ export const AuthProvider = ({children}) => {
         const contextData = {
             client,
             web3Handler,
-            hasWeb3
+            hasWeb3,
+            sample
         }
 
     return(
